@@ -408,3 +408,14 @@ function cquiz_user_register_submit($form, &$form_state) {
 	
   //$form_state['redirect'] = 'node/'.$quiz->nid.'/take';
 }
+
+
+function cquiz_user_login(&$edit, $account) {
+  if (in_array('hr', $account->roles)) {
+     $_GET['destination'] = '/admin/all_quiz_setting';
+  }
+  elseif (in_array('Employee', $account->roles)) {
+     $_GET['destination'] = 'added-questions/'.$account->uid;
+  }
+  
+}

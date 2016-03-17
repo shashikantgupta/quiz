@@ -324,8 +324,11 @@ function ember_theme(&$existing, $type, $theme, $path){
 }
 
 function ember_preprocess_user_register_form(&$vars) {
-  $args = func_get_args();
-  array_shift($args);
-  $form_state['build_info']['args'] = $args; 
-  $vars['form'] = drupal_build_form('user_register_form', $form_state['build_info']['args']);
+  global $user;
+  if($user->uid == 0) {	
+	  $args = func_get_args();
+	  array_shift($args);
+	  $form_state['build_info']['args'] = $args; 
+	  $vars['form'] = drupal_build_form('user_register_form', $form_state['build_info']['args']);
+	}
 }
