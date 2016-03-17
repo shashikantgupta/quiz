@@ -1,0 +1,4 @@
+name = cquiz
+description = Give Hr facilitating to set quiz as per requirment.
+dependencies[] = quiz
+core = 7.x

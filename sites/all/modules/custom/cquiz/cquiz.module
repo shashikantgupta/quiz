@@ -1,0 +1,410 @@
+<?php
+/**
+ * Implements hook_menu().
+ *
+ * Here we set up the URLs (menu entries) for the
+ * form examples. Note that most of the menu items
+ * have page callbacks and page arguments set, with
+ * page arguments set to be functions in external files.
+ */
+function cquiz_menu() {
+  $items = array();
+  $items['admin/quiz_setting'] = array(
+    'title' => 'Quiz Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('quiz_setting'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer quiz task'),
+    'description' => 'Quiz Settings',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/all_quiz_setting'] = array(
+    'title' => 'Quiz Settings list',
+    'page callback' => 'quiz_list',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer quiz task'),
+    'description' => 'Quiz Settings list',
+    'type' => MENU_NORMAL_ITEM,
+  );  
+  $items['admin/quiz_edit/%/%/edit'] = array(
+    'title' => 'Update Quiz Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('quiz_edit',2,3),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer quiz task'),
+    'type' => MENU_NORMAL_ITEM
+  );  
+  
+  return $items;
+}
+
+function cquiz_permission() {
+  return array(
+    'administer quiz task' => array(
+      'title' => t('Administer Quiz Task'),
+      'description' => t('Perform administration tasks for Quiz.'),
+    ),
+  );
+}
+
+
+function quiz_edit($form, &$form_state,$level, $type) {
+	
+	$result = db_select('cquiz', 'cq')
+    ->fields('cq')
+    ->condition('skill_level', $level,'=')
+    ->condition('skill_type', $type,'=')
+    ->execute()
+    ->fetchAssoc();
+    //print "<pre>"; print_r($result['skill_level']); exit;
+    
+	$skill_level;
+	$myvoc = taxonomy_vocabulary_machine_name_load('skill_level');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+	 $skill_level[$term->tid] = $term->name;
+	}
+
+	$skill_type;
+	$myvoc = taxonomy_vocabulary_machine_name_load('skill_type');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+		if($term->parents[0] != 0) { 
+			 $skill_type[$term->tid] = $term->name;
+		}
+	}     
+   $form['skill_level'] = array(
+       '#type' => 'select',
+       '#title' => t('Skill Level'),
+       '#options' => $skill_level,
+       '#disabled' => TRUE,	
+       '#value' => $result['skill_level'],
+       '#description' => t('Select Skill Level from Drop Down.'),
+   ); 
+   
+  $form['skill_type'] = array(
+       '#type' => 'select',
+       '#title' => t('Skill Type'),
+       '#required' => true,
+       '#disabled' => TRUE,
+       '#value' => $result['skill_type'],
+       '#options' => $skill_type,
+       '#description' => t('Select Skill Type from Drop Down.'),
+   );  
+  $form['question_set'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Question Sets'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );   
+ 
+  $form['question_set']['Beginner'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Beginner'),
+       '#options' => number(),
+       '#required' => true,
+       '#value' => $result['beginner'],
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   ); 
+   
+  $form['question_set']['intermediate'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Intermediate'),
+       '#options' => number(),
+       '#required' => true,
+       '#value' => $result['intermediate'],
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   ); 
+   
+  $form['question_set']['advanced'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Advanced'),
+       '#options' => number(),
+       '#required' => true,
+       '#value' => $result['advanced'],
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   ); 
+   
+  $form['question_set']['expert'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Expert'),
+       '#options' => number(),
+       '#required' => true,
+       '#value' => $result['expert'],
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   );            
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'submit'
+  );
+  return $form;    
+}	
+
+function quiz_edit_submit($form, &$form_state) {
+		//insert data to table
+		$nid = db_update('cquiz') // Table name no longer needs {}
+		->fields(array(
+		  'beginner' => $form_state['input']['Beginner'],
+		  'intermediate' => $form_state['input']['intermediate'],
+		  'advanced' => $form_state['input']['advanced'],
+		  'expert' => $form_state['input']['expert']	  
+		))
+        ->condition('skill_level', $form_state['values']['skill_level'],'=')
+        ->condition('skill_type', $form_state['values']['skill_type'],'=')
+		->execute();
+		if($nid == '1'){
+			drupal_set_message(t("Entry has been added to Quiz."), 'status');
+			drupal_goto('admin/all_quiz_setting');
+		}
+		else {
+		  drupal_set_message(t("Entry could not added to Quiz."), 'warning');
+		}
+		
+}	
+
+function quiz_setting($form, &$form_state) {
+	
+	$skill_level;
+	$myvoc = taxonomy_vocabulary_machine_name_load('skill_level');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+	 $skill_level[$term->tid] = $term->name;
+	}
+
+	$skill_type;
+	$myvoc = taxonomy_vocabulary_machine_name_load('skill_type');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+		if($term->parents[0] != 0) { 
+			 $skill_type[$term->tid] = $term->name;
+		}
+	}    
+  
+   $form['skill_level'] = array(
+       '#type' => 'select',
+       '#title' => t('Skill Level'),
+       '#options' => $skill_level,
+       '#required' => true,
+       '#description' => t('Select Skill Level from Drop Down.'),
+   ); 
+   
+  $form['skill_type'] = array(
+       '#type' => 'select',
+       '#title' => t('Skill Type'),
+       '#required' => true,
+       '#options' => $skill_type,
+       '#description' => t('Select Skill Type from Drop Down.'),
+   );  
+  $form['question_set'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Question Sets'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );   
+ 
+  $form['question_set']['Beginner'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Beginner'),
+       '#options' => number(),
+       '#required' => true,
+       '#default_value' => 0,
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   ); 
+   
+  $form['question_set']['intermediate'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Intermediate'),
+       '#options' => number(),
+       '#required' => true,
+       '#default_value' => 0,
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   ); 
+   
+  $form['question_set']['advanced'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Advanced'),
+       '#options' => number(),
+       '#required' => true,
+       '#default_value' => 0,
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   ); 
+   
+  $form['question_set']['expert'] = array(
+       '#type' => 'select',
+       '#title' => t('Total Questions for Expert'),
+       '#options' => number(),
+       '#required' => true,
+       '#default_value' => 0,
+       '#description' => t('Set this to <em>Yes</em> if you would like this category to be selected by default.'),
+   );            
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+  return $form;
+}
+
+
+
+/**
+ * Submit function for form_example_tutorial_7().
+ *
+ * Adds a submit handler/function to our form to send a successful
+ * completion message to the screen.
+ *
+ * @ingroup form_example
+ */
+function quiz_setting_submit($form, &$form_state) {
+	
+	$result = db_select('cquiz', 'cq')
+    ->fields('cq')
+    ->condition('skill_level', $form_state['input']['skill_level'],'=')
+    ->condition('skill_type', $form_state['input']['skill_type'],'=')
+    ->execute()
+    ->fetchAssoc();
+    
+    if(!empty($result)) {
+		drupal_set_message(t("Entry has already Added."), 'status');
+	}
+	else {
+		//insert data to table
+		$nid = db_insert('cquiz') // Table name no longer needs {}
+		->fields(array(
+		  'skill_level' => $form_state['input']['skill_level'],
+		  'skill_type' => $form_state['input']['skill_type'],
+		  'beginner' => $form_state['input']['Beginner'],
+		  'intermediate' => $form_state['input']['intermediate'],
+		  'advanced' => $form_state['input']['advanced'],
+		  'expert' => $form_state['input']['expert'],	  
+		))
+		->execute();
+		
+		drupal_set_message(t("Entry has beed added to Quiz."), 'status');
+		drupal_goto('admin/all_quiz_setting');
+	}		
+}
+
+/**
+ * number function for select list
+ * 
+ */ 
+function number() {
+  $result = array();
+  for ($x = 0; $x <= 100; $x++) {
+	 $result[$x] = $x; 
+  }	  	
+  return $result;	
+}	
+
+/**
+ * Quiz list 
+ * 
+ */ 
+function quiz_list() {
+	$result = db_select('cquiz', 'cq')
+		->fields('cq')
+		->execute()
+		->fetchAll();
+    
+    $options = array();
+    foreach($result as $key => $value) {
+		$skill_level = taxonomy_term_load($value->skill_level);
+        $skill_level_name = $skill_level->name;
+        
+		$skill_type = taxonomy_term_load($value->skill_type);
+        $skill_type_name = $skill_type->name;        
+		$rows[] = array(
+          array('field' => 'skill_level', 'data' => $skill_level_name),
+          array('field' => 'skill_type', 'data' => $skill_type_name),
+          array('field' => 'Operation', 'data' => l(t('Edit'), 'admin/quiz_edit/'.$value->skill_level.'/'.$value->skill_type.'/edit', array('attributes' => array('class' => 'action-links'))))
+        );
+	}	
+	  $header = array(
+		  array('data' => 'skill_level', 'field' => 'Skill Level'),
+		  array('data' => 'skill_type', 'field' => 'Skill Type'),
+		  array('data' => 'Operation', 'field' => 'Operation')
+	  );    
+    
+    $output = l(t('Add Quiz logic'), 'admin/quiz_setting', array('attributes' => array('class' => 'action-links')));
+    $output .= '<p></p>';
+    
+	$output .= theme('table', array(
+	  'header' => $header,
+	  'rows' => $rows,
+	  'attributes' => array('class' => array('mytable'))
+	));
+	return $output;
+}	
+
+
+function cquiz_form_alter(&$form, &$form_state,$form_id) {
+  switch ($form_id) {
+    case 'user_register_form':
+          $form['#submit'][] = 'cquiz_user_register_submit';
+      break;
+  }
+}
+
+function cquiz_user_register_submit($form, &$form_state) {
+	
+	$form_state['redirect'] = 'node/24/take';
+
+	$fullname = $form_state['user']->profile_main['field_first_name']['und'][0]['value'] + $form_state['user']->profile_main['field_last_name']['und'][0]['value'];
+	$type = $form_state['user']->profile_main['field_skill_type']['und'][0]['tid'];
+	$level = $form_state['user']->profile_main['field_skill_level']['und'][0]['tid'];
+	
+	$logic = db_select('cquiz', 'cq')
+    ->fields('cq')
+    ->condition('skill_level', $level,'=')
+    ->condition('skill_type', $type,'=')
+    ->execute()
+    ->fetchAssoc();
+    //print"<pre>"; print_r($logic); exit;
+    
+    if(!empty($logic)) {
+		$logic['id'];
+		$logic['skill_level'];
+		$logic['skill_type'];
+		$logic['beginner'];
+		$logic['intermediate'];
+		$logic['advanced'];
+		$logic['expert'];
+		$logic['time'];
+	}	
+	
+	$tid = $logic['beginner'].'+'.$level;
+	$view = views_get_view('questions');
+	$view->set_arguments(array($tid));
+	$view->set_items_per_page(10);
+	$view->execute();
+	$objects = $view->result;
+	
+    global $user;
+ 
+	$quiz = new stdClass();
+	$quiz->title = 'Quiz For '. $fullname;
+	$quiz->type = 'quiz';
+	$quiz->language = LANGUAGE_NONE;
+	$quiz->uid = 1; 
+	$quiz->status = 1;
+	 
+	node_object_prepare($quiz);
+	$quiz = node_submit($quiz);
+	$quiz1 = node_save($quiz);
+		
+	$questions1[0] = new StdClass();
+    $questions1[0]->nid=9;
+    $questions1[0]->vid=9;
+    $questions1[0]->weight=1;
+    $questions1[0]->max_score=7;
+    $questions1[0]->auto_update_max_score=1;
+    $questions1[0]->refresh='';
+    $questions1[0]->state=1;
+    
+    	
+    quiz_set_questions($quiz, $questions1);
+	
+  //$form_state['redirect'] = 'node/'.$quiz->nid.'/take';
+}

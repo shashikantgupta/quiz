@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * @file
+ * AJAX Examples install file schema for ajax_example_form_node_form_alter()
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function cquiz_schema() {
+  $schema['cquiz'] = array(
+    'description' => 'Stores extra settings for Quiz.',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'description' => 'The id to store settings.',
+      ),
+      'skill_level' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Skill level',
+      ),
+      'skill_type' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Skill Type',
+      ),   
+      'beginner' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Beginner',
+      ), 
+      'intermediate' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'intermediate',
+      ), 
+      'advanced' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Advanced',
+      ), 
+      'expert' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Expert',
+      ),  
+      'time' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Time for Quiz',
+      ),                           
+    ),
+    'primary key' => array('id')
+  );
+  return $schema;
+}
