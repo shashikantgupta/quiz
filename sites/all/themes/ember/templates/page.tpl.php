@@ -1,4 +1,5 @@
 <div id="branding" class="clearfix">
+<div class="container">
 	<?php global $user; ?>
 	<?php if (!in_array('examinee', $user->roles)): ?>
     <?php if (!empty($breadcrumb)): ?>
@@ -17,10 +18,11 @@
     <?php print render($tabs); ?>
     <?php endif;?>
     </div>
+    </div>
   </div>
 
   <div id="page"<?php echo theme_get_setting('ember_no_fadein_effect') ? '' : ' class="fade-in"'?>>
-<div class="container ">
+<div class="container">
   <?php if ($page['help']): ?>
     <?php print render($page['help']); ?>
   <?php endif; ?>
