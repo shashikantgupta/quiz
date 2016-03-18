@@ -12,7 +12,7 @@ body {
     background: #f8f8f8;
     padding-bottom: 6rem;
   min-height: 100%;
-  font-family: "Calibri", Helvetica Neue, Arial, sans-serif;
+  font-family: "Helvetica Neue", helvetica, "Segoe UI", segoe, "Ubuntu", "Droid Sans", "Arial", sans-serif;
 }
 .container {
     width: 1170px;
@@ -22,8 +22,20 @@ body {
     padding-right: 15px;
 }
 #branding {
- background: url(../images/header-bg.jpg) repeat-x 0 0;
+ background: #e11e26 url(../images/header-bg.jpg) repeat-x 0 0;
   color: #BBB;
+  padding: 0;
+}
+#tab-bar{
+	background: #000;
+	padding: 8px 0;
+	width: 100%;
+}
+[dir="ltr"] .tabs.primary li, [dir="ltr"] .tabs.secondary li{
+	margin-right: 1.70711em;
+}
+div#branding ul.secondary{
+	margin-top: 10px;
 }
 #footer{
 	width: 100%;
@@ -38,7 +50,7 @@ body {
   display: block;
   margin: 0;
   width: 100%;
-  font-family: sans-serif;
+  font-family: "Helvetica Neue", helvetica, "Segoe UI", segoe, "Ubuntu", "Droid Sans", "Arial", sans-serif;
   font-size: 18px;
   appearance: none;
   box-shadow: none;
@@ -89,4 +101,15 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	max-width: 100%;
 	color: #666;
 	font-family: 'Calibri';
+}
+
+#user-login{
+ width: 600px;
+ margin: 40px auto;
+ padding:30px 40px;
+ background: #fff;
+ border: 1px solid #cccccc;
+ border-radius: 10px;
+ -webkit-border-radius: 10px;
+ -moz-border-radius: 10px;
 }
