@@ -70,3 +70,17 @@ function cquiz_schema() {
   );
   return $schema;
 }
+
+
+/**
+ * Add newcol field to {mytable1} table.
+ */
+function cquiz_update_7001() {
+  $spec = array(
+    'type' => 'varchar',
+    'description' => 'Aptitude',
+    'length' => 256,
+    'not null' => FALSE,
+  ); 
+  db_add_field( 'cquiz', 'aptitude', $spec);
+}
