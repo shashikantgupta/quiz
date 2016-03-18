@@ -20,7 +20,7 @@
   </div>
 
   <div id="page"<?php echo theme_get_setting('ember_no_fadein_effect') ? '' : ' class="fade-in"'?>>
-
+<div class="container ">
   <?php if ($page['help']): ?>
     <?php print render($page['help']); ?>
   <?php endif; ?>
@@ -45,10 +45,13 @@
     <?php print render($page['content']); ?>
   </div>
 
-  <div id="footer">
-  <div class="container">
-    <div class="row"> <a href="#" class="gotop"><img src="images/wpp_icon.jpg" alt="Prodigi | wpp" title="Prodigi | wpp"> </a> <?php print $feed_icons; ?> </div>
   </div>
+<div id="footer"></div>
 </div>
 
-</div>
+<!-- <div id="footer">
+  <div class="container">
+    <div class="row"> <a href="#" class="gotop"><img src="/prodigiquiz/sites/all/themes/ember/images/wpp_icon.jpg" alt="Prodigi | wpp" title="Prodigi | wpp"> </a> <?php print $feed_icons; ?> </div>
+  </div>
+</div> -->
+
