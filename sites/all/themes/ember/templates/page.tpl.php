@@ -46,7 +46,9 @@
   </div>
 
   <div id="footer">
-    <?php print $feed_icons; ?>
+  <div class="container">
+    <div class="row"> <a href="#" class="gotop"><img src="images/wpp_icon.jpg" alt="Prodigi | wpp" title="Prodigi | wpp"> </a> <?php print $feed_icons; ?> </div>
   </div>
+</div>
 
 </div>

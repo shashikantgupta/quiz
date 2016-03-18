@@ -6,6 +6,7 @@ core = 7.x
 
 ; Stylesheets
 stylesheets[screen][] = styles/style.css
+stylesheets[screen][] = styles/custom.css
 stylesheets[screen][] = styles/system.base.css
 stylesheets[screen][] = styles/system.menus.css
 stylesheets[screen][] = styles/system.theme.css
