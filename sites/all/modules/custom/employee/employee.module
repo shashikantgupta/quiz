@@ -86,3 +86,11 @@ function emp_quiz_setting($form, &$form_state) {
   );   
    return $form;
 }	
+
+
+function employee_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'employee') . '/views',
+  );
+}
