@@ -231,7 +231,6 @@ table {
 	font-size:12px;
 	text-shadow: 1px 1px 0px #fff;
 	background:#eaebec;
-	margin:20px;
 	border:#ccc 1px solid;
 
 	-moz-border-radius:3px;
@@ -308,7 +307,7 @@ table tr:hover td {
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
 }
 /****end here******/
-#add-user, #quiz-setting{
+#add-user, #quiz-setting, #emp-quiz-setting{
 	background: #fff none repeat scroll 0 0;
 	border: 1px solid #cccccc;
 	border-radius: 10px;
@@ -318,4 +317,8 @@ table tr:hover td {
 }
 #quiz-setting .form-type-select .form-select {
     width: 50%;
+}
+#user-admin-account ul li{
+ list-style: none;
+ list-style-type: none;
 }
