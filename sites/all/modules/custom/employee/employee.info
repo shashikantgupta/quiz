@@ -1,0 +1,4 @@
+name = employee
+description = Give Hr facilitating to set employee detail.
+dependencies[] = quiz
+core = 7.x

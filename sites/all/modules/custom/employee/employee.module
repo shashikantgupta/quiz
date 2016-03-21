@@ -1,0 +1,88 @@
+<?php
+/**
+ * Implements hook_menu().
+ *
+ * Here we set up the URLs (menu entries) for the
+ * form examples. Note that most of the menu items
+ * have page callbacks and page arguments set, with
+ * page arguments set to be functions in external files.
+ */
+function employee_menu() {
+  $items = array();
+  $items['admin/emp/setting'] = array(
+    'title' => 'Quiz Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('emp_quiz_setting'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer quiz task'),
+    'description' => 'Quiz Settings',
+    'type' => MENU_NORMAL_ITEM,
+  ); 
+  
+  return $items;
+}
+
+
+function emp_quiz_setting($form, &$form_state) {
+   $form['empname'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Add Employee Name'),
+       '#size' => 50,
+       '#required' => TRUE,
+       '#description' => t('Add Employee Name.'),
+   );   
+   $form['empid'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Add Employee ID'),
+       '#size' => 50,
+       '#required' => TRUE,
+       '#description' => t('Add Employee ID.'),
+   );	
+   $form['email'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Add Employee Email Address'),
+       '#size' => 50,
+       '#required' => TRUE,
+       '#description' => t('Add Employee detail to database.'),
+   );
+   
+ 	$emp_level;
+	$myvoc = taxonomy_vocabulary_machine_name_load('employee_type');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+		$emp_level[$term->tid] = $term->name;
+	}     
+   $form['emp_level'] = array(
+       '#type' => 'select',
+       '#title' => t('Employee Level'),
+       '#options' => $emp_level,
+       '#description' => t('Select Employee Level from Drop Down.'),
+   );  
+   
+ 	$skill_type;
+	$myvoc = taxonomy_vocabulary_machine_name_load('skill_type');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+		$skill_type[$term->tid] = $term->name;
+	}     
+   $form['emp_skills'] = array(
+       '#type' => 'select',
+       '#title' => t('Employee Skills'),
+       '#options' => $skill_type,
+       '#multiple' => TRUE,      
+       '#description' => t('Select Employee Skills from Drop Down.'),
+   );
+   
+   $form['expected_questions'] = array(
+       '#type' => 'select',
+       '#title' => t('Expected No. of Question'),
+       '#options' => number(),	
+       '#description' => t('Add Expected No. of Question.'),
+   );       
+   
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit'
+  );   
+   return $form;
+}	

@@ -59,12 +59,62 @@ function cquiz_permission() {
 
 
 function add_user($form, &$form_state) {
+   $form['empname'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Add Employee Name'),
+       '#size' => 50,
+       '#required' => TRUE,
+       '#description' => t('Add Employee Name.'),
+   );   
+   $form['empid'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Add Employee ID'),
+       '#size' => 50,
+       '#required' => TRUE,
+       '#description' => t('Add Employee ID.'),
+   );	
    $form['email'] = array(
        '#type' => 'textfield',
        '#title' => t('Add Employee Email Address'),
        '#size' => 50,
+       '#required' => TRUE,
        '#description' => t('Add Employee detail to database.'),
    );
+   
+ 	$emp_level;
+	$myvoc = taxonomy_vocabulary_machine_name_load('employee_type');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+		$emp_level[$term->tid] = $term->name;
+	}     
+   $form['emp_level'] = array(
+       '#type' => 'select',
+       '#title' => t('Employee Level'),
+       '#options' => $emp_level,
+       '#description' => t('Select Employee Level from Drop Down.'),
+   );  
+   
+ 	$skill_type;
+	$myvoc = taxonomy_vocabulary_machine_name_load('skill_type');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+		$skill_type[$term->tid] = $term->name;
+	}     
+   $form['emp_skills'] = array(
+       '#type' => 'select',
+       '#title' => t('Employee Skills'),
+       '#options' => $skill_type,
+       '#multiple' => TRUE,      
+       '#description' => t('Select Employee Skills from Drop Down.'),
+   );
+   
+   $form['expected_questions'] = array(
+       '#type' => 'select',
+       '#title' => t('Expected No. of Question'),
+       '#options' => number(),	
+       '#description' => t('Add Expected No. of Question.'),
+   );       
+   
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Submit'
@@ -87,6 +137,18 @@ function add_user_submit($form, &$form_state) {
 	user_save($account);
 	if ($account->uid) {
 		
+	  //Insert Employee data to system
+	  $emp = db_insert('employee') // Table name no longer needs {}
+		->fields(array(
+		  'emp_name' => $form_state['input']['empname'],
+		  'emp_id' => $account->uid,
+		  'emp_mail' => $form_state['input']['email'],
+		  'emp_level' => $form_state['input']['emp_level'],
+		  'emp_skills' => $form_state['input']['emp_skills'],
+		  'questions' => $form_state['input']['expected_questions']		  	  
+		))
+		->execute();
+	  
 	  $role = user_role_load_by_name("employee");
 	  user_multiple_role_edit(array($account->uid), 'add_role', $role->rid);	
 		
@@ -146,7 +208,7 @@ function quiz_edit($form, &$form_state,$level, $type) {
   $tech = $result['beginner'] + $result['intermediate'] + $result['advanced'] + $result['expert'];
   
   $form['information'] = array(
-	 '#markup' => '<div class="total-aptitude">Total Selected Aptitude Question: '.$result["aptitude"].'<br>Total Selected Technical Question: '.$tech.'</div>',
+	 '#markup' => '<h4 class="total-aptitude">Total Selected Aptitude Question: '.$result["aptitude"].'</h4>',
   );   
    
   $form['question_set_app'] = array(
@@ -163,7 +225,11 @@ function quiz_edit($form, &$form_state,$level, $type) {
        '#required' => true,
        '#value' => $result['aptitude'],
        '#description' => t('Set Aptitude Questions Count.'),
-   );   
+   );  
+   
+  $form['information1'] = array(
+	 '#markup' => '<h4 class="total-technical">Total Selected Technical Question: '.$tech.'</h4>',
+  );     
     
   $form['question_set'] = array(
     '#type' => 'fieldset',
@@ -261,7 +327,7 @@ function quiz_setting($form, &$form_state) {
 	$myvoc = taxonomy_vocabulary_machine_name_load('skill_type');
 	$tree = taxonomy_get_tree($myvoc->vid);
 	foreach ($tree as $term) {
-		if($term->parents[0] != 0) { 
+		if(($term->parents[0] != 0) && ($term->depth == 1)) { 
 			 $skill_type[$term->tid] = $term->name;
 		}	
 	}    
@@ -426,17 +492,26 @@ function quiz_list() {
         $skill_level_name = $skill_level->name;
         
 		$skill_type = taxonomy_term_load($value->skill_type);
-        $skill_type_name = $skill_type->name;        
+        $skill_type_name = $skill_type->name; 
+        
+        $tech = $value->beginner + $value->intermediate + $value->advanced + $value->expert;
+               
 		$rows[] = array(
           array('field' => 'skill_level', 'data' => $skill_level_name),
           array('field' => 'skill_type', 'data' => $skill_type_name),
+          array('field' => 'aptitude_questions', 'data' => $value->aptitude),
+          array('field' => 'technical_questions', 'data' => $tech),   
+          array('field' => 'time', 'data' => $value->time.' Minute'),       
           array('field' => 'Operation', 'data' => l(t('Edit'), 'admin/quiz_edit/'.$value->skill_level.'/'.$value->skill_type.'/edit', array('attributes' => array('class' => 'action-links'))))
         );
 	}	
 	  $header = array(
-		  array('data' => 'skill_level', 'field' => 'Skill Level'),
-		  array('data' => 'skill_type', 'field' => 'Skill Type'),
-		  array('data' => 'Operation', 'field' => 'Operation')
+		  array('field' => 'skill_level', 'data' => 'Skill Level'),
+		  array('field' => 'skill_type', 'data' => 'Skill Type'),
+		  array('field' => 'aptitude_questions', 'data' => 'Total Aptitude Questions'),
+		  array('field' => 'technical_questions', 'data' => 'Total Technical Questions'),
+		  array('field' => 'time', 'data' => 'Time set for Test'),
+		  array('field' => 'Operation', 'data' => 'Operation')
 	  );    
     
     $output = l(t('Add Quiz logic'), 'admin/quiz_setting', array('attributes' => array('class' => 'action-links')));
@@ -526,7 +601,7 @@ function cquiz_user_register_submit($form, &$form_state) {
 
 function cquiz_user_login(&$edit, $account) {
   if (in_array('hr', $account->roles)) {
-     $_GET['destination'] = '/admin/quiz/reports/results';
+     $_GET['destination'] = '/employee-list';
   }
   elseif (in_array('employee', $account->roles)) {
      $_GET['destination'] = 'added-questions/'.$account->uid;

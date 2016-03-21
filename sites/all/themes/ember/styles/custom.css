@@ -21,26 +21,10 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
-.headerfixed-top{
-	background-color: #b3161d;
-	max-height: 4px;
-	height: 4px;
-	min-width: 100%;
-	display: block;
-}
 #branding {
  background: #e11e26 url(../images/header-bg.jpg) repeat-x 0 0;
   color: #BBB;
   padding: 0;
-}
-#branding .container h1.page-title{
-	margin: 0.4em 0 .25em;
-	color: #fff;
-	font-size: 30px;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
-	font-weight: normal;
-	line-height: 50px;
-
 }
 #tab-bar{
 	background: #000;
@@ -119,7 +103,7 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	font-family: 'Calibri';
 }
 
-#user-login, #user-pass, #user-register-form{
+#user-login{
  width: 600px;
  margin: 40px auto;
  padding:30px 40px;

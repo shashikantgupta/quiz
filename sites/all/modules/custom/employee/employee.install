@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * AJAX Examples install file schema for ajax_example_form_node_form_alter()
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function employee_schema() {
+  $schema['employee'] = array(
+    'description' => 'Stores employee settings for Quiz.',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'description' => 'The id to store settings.',
+      ),
+      'emp_name' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Employee Name',
+      ),
+      'emp_id' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Employee Id',
+      ),   
+      'emp_mail' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Employee Mail',
+      ), 
+      'emp_level' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Employee Level',
+      ), 
+      'emp_skills' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Employee Skill',
+      ), 
+      'questions' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Questions',
+      ),                             
+    ),
+    'primary key' => array('id')
+  );
+  return $schema;
+}
