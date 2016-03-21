@@ -204,6 +204,8 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
     position: relative;
     min-height: 35px;
     line-height: 1;
+    padding-top: 8px;
+    display: block;
 }
 /***Table css*****/
 .view-content{
@@ -304,4 +306,16 @@ table tr:hover td {
 	background: #f2f2f2;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
+}
+/****end here******/
+#add-user, #quiz-setting{
+	background: #fff none repeat scroll 0 0;
+	border: 1px solid #cccccc;
+	border-radius: 10px;
+	margin: 40px auto;
+	padding: 30px 40px;
+	width: 100%;
+}
+#quiz-setting .form-type-select .form-select {
+    width: 50%;
 }
