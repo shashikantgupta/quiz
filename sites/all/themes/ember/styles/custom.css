@@ -176,10 +176,10 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	float: left;
 	padding: 15px 0;
 	position: relative;
-	top: 25px;
+	top: 5px;
 }
 .statistic-box .col-md4{
-	width: 23%;
+	width: 20%;
 	float: left;
 	display: inline-block;
 	border-radius: 4px;
@@ -249,6 +249,7 @@ table th {
 	background: #ededed;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb));
 	background: -moz-linear-gradient(top,  #ededed,  #ebebeb);
+	    font-size: 14px;
 }
 table th:first-child {
 	text-align: left;
