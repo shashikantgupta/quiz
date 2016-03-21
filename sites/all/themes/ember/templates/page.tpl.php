@@ -1,19 +1,23 @@
 <div id="branding" class="clearfix">
+<div class="headerfixed-top"></div>
   <div class="container">
-   <?php global $user; ?>
-   <?php if (!in_array('examinee', $user->roles)): ?>
-    <?php if (!empty($breadcrumb)): ?>
-      <?php print $breadcrumb; ?>
-    <?php endif; ?>
-  <?php endif;?>
-  <?php print render($title_prefix); ?>
+<?php print render($title_prefix); ?>
   <?php if ($title): ?>
     <h1 class="page-title">
      <?php print $title; ?>
    </h1>
  <?php endif; ?>
  <?php print render($title_suffix); ?>
+ <!--breadcrumb here-->
+ <?php global $user; ?>
+   <?php if (!in_array('examinee', $user->roles)): ?>
+    <?php if (!empty($breadcrumb)): ?>
+      <?php print $breadcrumb; ?>
+    <?php endif; ?>
+  <?php endif;?>
+ <!--end breadcrumb here-->
  <?php if (!in_array('examinee', $user->roles)): ?>
+  
  </div>
 
  <div id="tab-bar" class="clearfix">
@@ -27,6 +31,9 @@
 
   <div id="page"<?php echo theme_get_setting('ember_no_fadein_effect') ? '' : ' class="fade-in"'?>>
 <div class="container">
+<!--Heading here-->
+
+<!--End here-->
   <?php if ($page['help']): ?>
     <?php print render($page['help']); ?>
   <?php endif; ?>
