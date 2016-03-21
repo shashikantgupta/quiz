@@ -25,6 +25,11 @@ body {
  background: #e11e26 url(../images/header-bg.jpg) repeat-x 0 0;
   color: #BBB;
   padding: 0;
+      border-top: 1px solid #303030;
+}
+.logo{
+    padding: 0 0;
+    float: left;
 }
 #tab-bar{
 	background: #000;
@@ -36,6 +41,15 @@ body {
 }
 div#branding ul.secondary{
 	margin-top: 10px;
+}
+.headerfixed-top{
+	height: 40px;
+	display: block;
+	width: 100%;
+	background: -webkit-linear-gradient(top, #e11e26, #c9050d);
+	border-top: 1px solid #aaa;
+	background: -webkit-gradient(linear, left top, left bottom, from(#e11e26), to(#c9050d));
+	float: left;
 }
 #footer{
 	width: 100%;
@@ -66,6 +80,14 @@ div#branding ul.secondary{
 	font: 16px Verdana, Tahoma, sans-serif; 
 	color: #333;
 	padding: 5px 0;
+}
+.container.boxTypical{
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	background: #fff;
+	border: 1px solid #d8e2e7;
+	margin: 0 0 30px;
+	overflow: hidden;
 }
 
 /*****Form******/
