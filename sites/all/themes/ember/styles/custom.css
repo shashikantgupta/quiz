@@ -1,4 +1,5 @@
 /**********Custom here*********/
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
 html {
   height: 100%;
   box-sizing: border-box;
@@ -12,14 +13,20 @@ body {
     background: #f8f8f8;
     padding-bottom: 6rem;
   min-height: 100%;
-  font-family: "Helvetica Neue", helvetica, "Segoe UI", segoe, "Ubuntu", "Droid Sans", "Arial", sans-serif;
+  font-family: "Helvetica Neue", helvetica, Calibri, Arial, sans-serif;
 }
+*, *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+body, html { font-size: 100%; padding: 0; margin: 0;}
 .container {
     width: 1170px;
     margin-right: auto;
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
+}
+#page{
+	margin: 0;
+	padding: 0;
 }
 #branding {
  background: #e11e26 url(../images/header-bg.jpg) repeat-x 0 0;
@@ -134,4 +141,67 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
  border-radius: 10px;
  -webkit-border-radius: 10px;
  -moz-border-radius: 10px;
+}
+
+/******Search here*******/
+/* Search icon by IcoMoon, made with http://icomoon.io/app/ */
+.header-rightContent{
+	float: right;
+}
+.page-title h1{
+	font-size: 30px;
+	color: #000;
+}
+.SubTitle h2{
+    color: rgba(0,0,0,0.85);
+        font-size: 16px;
+}
+.overflow-hidden {
+    overflow: hidden;
+}
+.bg-image {
+    background-color: #f9f9f9;
+    background-position: center center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-image: url('../images/title_bg.png');
+}
+.content {
+    margin: 0 auto;
+    padding: 6px 0 6px 1px;
+    max-width: 100%;
+}
+.statistic-box{
+	width: 100%;
+	float: left;
+	padding: 15px 0;
+	position: relative;
+	top: 25px;
+}
+.statistic-box .col-md4{
+	width: 23%;
+	float: left;
+	display: inline-block;
+	border-radius: 4px;
+	text-align: center;
+	color: #000;
+	margin: 0 15px 15px 0px;
+	height: 142px;
+	background: #c5c5c5;
+}
+.statistic-box .col-md4:nth-last-child{
+	margin: 0;
+}
+.statistic-box .number{
+	    font-size: 3.125rem;
+    line-height: 1;
+    padding: 32px 0 0;
+    display: block;
+}
+.statistic-box .captionText{
+	    font-size: 1.0625rem;
+    font-weight: 600;
+    position: relative;
+    min-height: 35px;
+    line-height: 1;
 }
