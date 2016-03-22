@@ -195,34 +195,23 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	-moz-box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
 	box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
 }
-.col-md4:after{
-	content: "";
-	width: 50px;
-	height: 50px;
-	top:0; right:0;
-	position:absolute;
-	display: inline-block;
-	z-index:-1;
-
-	border: 1px solid #f00;
-}
 .col-md4:nth-last-child{
 	margin: 0;
 }
 .col-md4 .number{
-	    font-size: 3.125rem;
-    line-height: 1;
-    padding: 32px 0 0;
-    display: block;
+	font-size: 3.125rem;
+	line-height: 1;
+	padding: 32px 0 0;
+	display: block;
 }
 .col-md4 .captionText{
-	    font-size: 1.0625rem;
-    font-weight: 600;
-    position: relative;
-    min-height: 35px;
-    line-height: 1;
-    padding-top: 8px;
-    display: block;
+	font-size: 1.0625rem;
+	font-weight: 600;
+	position: relative;
+	min-height: 35px;
+	line-height: 1;
+	padding-top: 8px;
+	display: block;
 }
 /***Table css*****/
 .view-content{
