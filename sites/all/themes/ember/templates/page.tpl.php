@@ -35,10 +35,10 @@
   <div class="container">
     <!--Body container here-->
     <div class="statistic-box">
-      <!-- <div class="col-md4"><span class="number">26</span><span class="captionText">Open tickets</span></div>
+      <div class="col-md4"><span class="number">26</span><span class="captionText">Open tickets</span></div>
       <div class="col-md4"><span class="number">26</span><span class="captionText">Closes tickets</span></div>
-      <div class="col-md4"><span class="number">26</span><span class="captionText">Pending tickets</span></div> -->
-      <!-- <div class="col-md4"><span class="number"><i class="fa fa-plus-circle"></i></span><span class="captionText">Add Emp</span></div> -->
+      <div class="col-md4"><span class="number">26</span><span class="captionText">Pending tickets</span></div>
+      <div class="col-md4"><span class="number"><i class="fa fa-plus-circle"></i></span><span class="captionText">Add Emp</span></div> 
     </div>
     <!--End body container here-->
    <!--breadcrumb here-->

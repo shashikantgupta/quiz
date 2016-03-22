@@ -153,8 +153,8 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	color: #000;
 }
 .SubTitle h2{
-    color: rgba(0,0,0,0.85);
-        font-size: 16px;
+	color: rgba(0,0,0,0.85);
+	font-size: 16px;
 }
 .overflow-hidden {
     overflow: hidden;
@@ -178,27 +178,44 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	position: relative;
 	top: 5px;
 }
-.statistic-box .col-md4{
+.col-md4{
 	width: 20%;
 	float: left;
 	display: inline-block;
+	position: relative;
 	border-radius: 4px;
 	text-align: center;
 	color: #000;
 	margin: 0 15px 15px 0px;
 	height: 142px;
-	background: #c5c5c5;
+	background: #c5c5c5 url(../images/box-bg.jpg) repeat-y 0 0;
+	border: 1px solid #ccc;
+	background-position: center center;
+	-webkit-box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
+	box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
 }
-.statistic-box .col-md4:nth-last-child{
+.col-md4:after{
+	content: "";
+	width: 50px;
+	height: 50px;
+	top:0; right:0;
+	position:absolute;
+	display: inline-block;
+	z-index:-1;
+
+	border: 1px solid #f00;
+}
+.col-md4:nth-last-child{
 	margin: 0;
 }
-.statistic-box .number{
+.col-md4 .number{
 	    font-size: 3.125rem;
     line-height: 1;
     padding: 32px 0 0;
     display: block;
 }
-.statistic-box .captionText{
+.col-md4 .captionText{
 	    font-size: 1.0625rem;
     font-weight: 600;
     position: relative;
@@ -242,7 +259,7 @@ table {
 	box-shadow: 0 1px 2px #d1d1d1;
 }
 table th {
-	padding:21px 25px 22px 25px;
+	padding:    padding: 14px;;
 	border-top:1px solid #fafafa;
 	border-bottom:1px solid #e0e0e0;
 
@@ -275,7 +292,7 @@ table td:first-child {
 	border-left: 0;
 }
 table td {
-	padding:18px;
+	padding:8px;
 	border-top: 1px solid #ffffff;
 	border-bottom:1px solid #e0e0e0;
 	border-left: 1px solid #e0e0e0;
