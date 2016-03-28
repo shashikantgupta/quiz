@@ -61,5 +61,65 @@ function employee_schema() {
     ),
     'primary key' => array('id')
   );
+  
+  $schema['employee_question'] = array(
+    'description' => 'Stores employee settings for Quiz.',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'description' => 'The id to store settings.',
+      ), 
+      'qemp_id' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Employee Id',
+      ), 
+      'emp_name' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Employee Name',
+      ),            
+      'skill_type_questions' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Skill Type Questions',
+      ),       
+      'total_questions' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Expected Total Questions',
+      ), 
+      'added_questions' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Added Questions',
+      ),
+      'pending_questions' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Pending Questions',
+      ), 
+      'expected_time' => array(
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'expected_time',
+      ),                                              
+    ),
+    'primary key' => array('id')
+  );  
   return $schema;
 }

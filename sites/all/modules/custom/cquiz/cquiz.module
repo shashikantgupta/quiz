@@ -59,6 +59,10 @@ function cquiz_permission() {
 
 
 function add_user($form, &$form_state) {
+	$form['detail'] = array(
+		'#type'=> 'item',
+		'#markup'=> '',
+	);	
    $form['empname'] = array(
        '#type' => 'textfield',
        '#title' => t('Add Employee Name'),
@@ -104,15 +108,39 @@ function add_user($form, &$form_state) {
        '#type' => 'select',
        '#title' => t('Employee Skills'),
        '#options' => $skill_type,
+       '#required' => TRUE,
        '#multiple' => TRUE,      
        '#description' => t('Select Employee Skills from Drop Down.'),
    );
    
-   $form['expected_questions'] = array(
+   $form['question'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Question Setting Form'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+   );  
+    
+   $form['question']['question_type'] = array(
+       '#type' => 'select',
+       '#title' => t('Question to add as per Skill Type'),
+       '#options' => $skill_type,
+       '#required' => TRUE,
+       '#multiple' => TRUE,      
+       '#description' => t('Select Question Type from Drop Down.'),
+   );  
+   
+   $form['question']['expected_questions'] = array(
        '#type' => 'select',
        '#title' => t('Expected No. of Question'),
        '#options' => number(),	
+       '#required' => TRUE,
        '#description' => t('Add Expected No. of Question.'),
+   );   
+   $form['question']['expected_time'] = array(
+       '#type' => 'date_popup',
+       '#title' => t('Expected Time'),	
+       '#required' => TRUE,
+       '#description' => t('Expected time.'),
    );       
    
   $form['submit'] = array(
@@ -148,6 +176,19 @@ function add_user_submit($form, &$form_state) {
 		  'questions' => $form_state['input']['expected_questions']		  	  
 		))
 		->execute();
+		
+	  //Insert Employee data to system
+	  $emp = db_insert('employee_question') // Table name no longer needs {}
+		->fields(array(
+		  'qemp_id' => $account->uid,
+		  'emp_name' => $form_state['input']['empname'],
+		  'skill_type_questions' => $form_state['input']['emp_skills'],
+		  'total_questions' => $form_state['input']['expected_questions'],	
+		  'added_questions' => 0,
+		  'pending_questions' => 0,
+		  'expected_time' => strtotime($form_state['input']['expected_time']['date']),	  	  
+		))
+		->execute();		
 	  
 	  $role = user_role_load_by_name("employee");
 	  user_multiple_role_edit(array($account->uid), 'add_role', $role->rid);	
@@ -601,7 +642,7 @@ function cquiz_user_register_submit($form, &$form_state) {
 
 function cquiz_user_login(&$edit, $account) {
   if (in_array('hr', $account->roles)) {
-     $_GET['destination'] = '/employee-list';
+     $_GET['destination'] = '/admin/emp/detail';
   }
   elseif (in_array('employee', $account->roles)) {
      $_GET['destination'] = 'added-questions/'.$account->uid;

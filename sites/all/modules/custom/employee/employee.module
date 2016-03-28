@@ -17,10 +17,113 @@ function employee_menu() {
     'access arguments' => array('administer quiz task'),
     'description' => 'Quiz Settings',
     'type' => MENU_NORMAL_ITEM,
-  ); 
+  );
+  $items['admin/emp/detail'] = array(
+    'title' => 'Employee list',
+    'page callback' => 'employee_list',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer quiz task'),
+    'description' => 'Employee Detail list',
+    'type' => MENU_NORMAL_ITEM,
+  );    
+  
+  $items['admin/emp/%/edit'] = array(
+    'title' => 'View Employee Detail',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('employee_edit',2),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer quiz task'),
+    'type' => MENU_NORMAL_ITEM
+  );  
   
   return $items;
 }
+
+function employee_edit($form, &$form_state,$emp_id) {
+
+	$result = db_select('employee_question', 'eq')
+		->fields('eq')
+		->condition('qemp_id', $emp_id,'=')
+		->execute()
+		->fetchAssoc();
+		
+	//print"<pre>"; print_r($result); exit;		
+		
+	$skill_type;
+	$myvoc = taxonomy_vocabulary_machine_name_load('skill_type');
+	$tree = taxonomy_get_tree($myvoc->vid);
+	foreach ($tree as $term) {
+		if($term->parents[0] != 0) { 
+			 $skill_type[$term->tid] = $term->name;
+		}
+	}	
+	$form['emp'] = array(
+		'#markup' => '<div> <h4>Employee Name:- '.$result['emp_name'].' </h4><br> <h4>Employee Id:- '.$result['qemp_id'].'</h4></div>',
+	);
+	 
+   $form['question'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Question Setting Form'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+   );  
+    
+   $form['question']['question_type'] = array(
+       '#type' => 'select',
+       '#title' => t('Question to add as per Skill Type'),
+       '#options' => $skill_type,
+       '#value' => $result['skill_type_questions'],
+       '#required' => TRUE,
+       '#multiple' => TRUE, 
+       '#disabled' => TRUE,     
+       '#description' => t('Select Question Type from Drop Down.'),
+   );  
+   
+   $form['question']['expected_questions'] = array(
+       '#type' => 'select',
+       '#title' => t('Expected No. of Question'),
+       '#options' => number(),	
+       '#value' => $result['total_questions'],
+       '#required' => TRUE,
+       '#disabled' => TRUE,
+       '#description' => t('Add Expected No. of Question.'),
+   );   
+   
+   $form['question']['added_questions'] = array(
+       '#type' => 'select',
+       '#title' => t('Added Question'),
+       '#options' => number(),	
+       '#value' => $result['added_questions'],
+       '#required' => TRUE,
+       '#disabled' => TRUE,
+       '#description' => t('Add Expected No. of Question.'),
+   );
+   
+   $form['question']['pending_questions'] = array(
+       '#type' => 'select',
+       '#title' => t('Pending Question'),
+       '#options' => number(),	
+       '#value' => $result['pending_questions'],
+       '#required' => TRUE,
+       '#disabled' => TRUE,
+       '#description' => t('Add Expected No. of Question.'),
+   );   
+   
+   $form['question']['expected_time'] = array(
+       '#type' => 'textfield',
+       '#title' => t('Expected Time'),
+       '#disabled' => TRUE,
+       '#value' => date("d-m-Y", $result['expected_time']),	
+       '#required' => TRUE,
+       '#description' => t('Expected time.'),
+   );             
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Submit',
+  );
+  return $form;
+}	
 
 
 function emp_quiz_setting($form, &$form_state) {
@@ -94,3 +197,53 @@ function employee_views_api() {
     'path' => drupal_get_path('module', 'employee') . '/views',
   );
 }
+
+
+/**
+ * Quiz list 
+ * 
+ */ 
+function employee_list() {
+	$result = db_select('employee_question', 'eq')
+		->fields('eq')
+		->execute()
+		->fetchAll();
+    
+    $options = array();
+    foreach($result as $key => $value) {
+               
+		$rows[] = array(
+          array('field' => 'emp_name', 'data' => $value->emp_name, 'class' => array('funky')),
+          array('field' => 'qemp_id', 'data' => $value->qemp_id),
+          array('field' => 'total_questions', 'data' => $value->total_questions),
+          array('field' => 'added_questions', 'data' => $value->added_questions),   
+          array('field' => 'pending_questions', 'data' => ($value->total_questions - $value->added_questions)),      
+          array('field' => 'expected_time', 'data' => date('m-d-Y',$value->expected_time)), 
+          array('field' => 'Operation', 'data' => l(t('Detail'), 'admin/emp/'.$value->qemp_id.'/edit', array('attributes' => array('class' => 'action-links'))))
+        );
+	}	
+	  $header = array(
+		  array('field' => 'emp_name', 'data' => 'Employee Name'),
+		  array('field' => 'qemp_id', 'data' => 'Employee Id'),
+		  array('field' => 'total_questions', 'data' => 'Total Assigned Questions'),
+		  array('field' => 'added_questions', 'data' => 'Added Questions'),
+		  array('field' => 'pending_questions', 'data' => 'Pending Questions'),
+		  array('field' => 'expected_time', 'data' => 'Expected Time'),
+		  array('field' => 'Operation', 'data' => 'View')
+	  );    
+    
+    $output = l(t('Add a Employee Detail'), 'admin/create/user', array('attributes' => array('class' => 'action-links')));
+    $output = '<div class="actions"><ul class="action-links"><li>'.l(t('Add a Employee Detail'), 'admin/create/user', array('attributes' => array('class' => 'action-links'))).'</li></ul></div>';
+    
+    
+    $output .= '<p></p>';
+    
+	if(isset($value->emp_name)) {
+		$output .= theme('table', array(
+		  'header' => $header,
+		  'rows' => $rows,
+		  'attributes' => array('class' => array('mytable'))
+		));
+	}
+	return $output;
+}	
