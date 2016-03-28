@@ -153,8 +153,8 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	color: #000;
 }
 .SubTitle h2{
-    color: rgba(0,0,0,0.85);
-        font-size: 16px;
+	color: rgba(0,0,0,0.85);
+	font-size: 16px;
 }
 .overflow-hidden {
     overflow: hidden;
@@ -178,34 +178,40 @@ input[type="color"].required, input[type="date"].required, input[type="datetime"
 	position: relative;
 	top: 5px;
 }
-.statistic-box .col-md4{
+.col-md4{
 	width: 20%;
 	float: left;
 	display: inline-block;
+	position: relative;
 	border-radius: 4px;
 	text-align: center;
 	color: #000;
 	margin: 0 15px 15px 0px;
 	height: 142px;
-	background: #c5c5c5;
+	background: #c5c5c5 url(../images/box-bg.jpg) repeat-y 0 0;
+	border: 1px solid #ccc;
+	background-position: center center;
+	-webkit-box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
+	box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.1) inset;
 }
-.statistic-box .col-md4:nth-last-child{
+.col-md4:nth-last-child{
 	margin: 0;
 }
-.statistic-box .number{
-	    font-size: 3.125rem;
-    line-height: 1;
-    padding: 32px 0 0;
-    display: block;
+.col-md4 .number{
+	font-size: 3.125rem;
+	line-height: 1;
+	padding: 32px 0 0;
+	display: block;
 }
-.statistic-box .captionText{
-	    font-size: 1.0625rem;
-    font-weight: 600;
-    position: relative;
-    min-height: 35px;
-    line-height: 1;
-    padding-top: 8px;
-    display: block;
+.col-md4 .captionText{
+	font-size: 1.0625rem;
+	font-weight: 600;
+	position: relative;
+	min-height: 35px;
+	line-height: 1;
+	padding-top: 8px;
+	display: block;
 }
 /***Table css*****/
 .view-content{
@@ -229,7 +235,7 @@ table {
 	font-family:Arial, Helvetica, sans-serif;
 	color:#666;
 	font-size:12px;
-	text-shadow: 1px 1px 0px #fff;
+
 	background:#eaebec;
 	border:#ccc 1px solid;
 
@@ -242,7 +248,6 @@ table {
 	box-shadow: 0 1px 2px #d1d1d1;
 }
 table th {
-	padding:21px 25px 22px 25px;
 	border-top:1px solid #fafafa;
 	border-bottom:1px solid #e0e0e0;
 
@@ -275,7 +280,7 @@ table td:first-child {
 	border-left: 0;
 }
 table td {
-	padding:18px;
+	    padding: 4px 0 4px 18px
 	border-top: 1px solid #ffffff;
 	border-bottom:1px solid #e0e0e0;
 	border-left: 1px solid #e0e0e0;
@@ -308,7 +313,7 @@ table tr:hover td {
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
 }
 /****end here******/
-#add-user, #quiz-setting, #emp-quiz-setting{
+#add-user, #quiz-setting, #emp-quiz-setting, #user-register-form{
 	background: #fff none repeat scroll 0 0;
 	border: 1px solid #cccccc;
 	border-radius: 10px;
@@ -322,4 +327,19 @@ table tr:hover td {
 #user-admin-account ul li{
  list-style: none;
  list-style-type: none;
+}
+/***********
+Warning Label
+***************/
+.label-danger td{
+	background: #d9534f;color: #fff;
+}
+.label-danger td a, .label-warning td a{
+	color: #fff;
+}
+table tr.label-danger:hover td{
+	background: #d9534f;color: #fff;
+}
+table tr.label-warning  td{
+	background: #f0ad4e;color: #fff;
 }
