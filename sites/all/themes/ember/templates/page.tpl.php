@@ -43,7 +43,7 @@
     <!--End body container here-->
    <!--breadcrumb here-->
    <?php global $user; ?>
-   <?php if (!in_array('examinee', $user->roles)): ?>
+   <?php if (!in_array('exa minee', $user->roles)): ?>
     <?php if (!empty($breadcrumb)): ?>
       <?php print $breadcrumb; ?>
     <?php endif; ?>
