@@ -212,15 +212,26 @@ function employee_list() {
     $options = array();
     foreach($result as $key => $value) {
                
-		$rows[] = array(
+        $now = time();
+        /*$now = date('Y-m-d',time());
+        $actual = date('Y-m-d',$value->expected_time);
+        $diff=date_diff($date1,$date2);*/
+        if($value->expected_time < $now) {
+			$class = 'red';
+		}
+		else {
+			$class = 'green';
+		}		 
+               
+		$rows[] = array('data' => array(
           array('field' => 'emp_name', 'data' => $value->emp_name, 'class' => array('funky')),
           array('field' => 'qemp_id', 'data' => $value->qemp_id),
           array('field' => 'total_questions', 'data' => $value->total_questions),
           array('field' => 'added_questions', 'data' => $value->added_questions),   
           array('field' => 'pending_questions', 'data' => ($value->total_questions - $value->added_questions)),      
           array('field' => 'expected_time', 'data' => date('m-d-Y',$value->expected_time)), 
-          array('field' => 'Operation', 'data' => l(t('Detail'), 'admin/emp/'.$value->qemp_id.'/edit', array('attributes' => array('class' => 'action-links'))))
-        );
+          array('field' => 'Operation', 'data' => l(t('Detail'), 'admin/emp/'.$value->qemp_id.'/edit', array('attributes' => array('class' => 'action-links'))).' <a href="#">Assign</a>')
+        ),'class' => array($class));
 	}	
 	  $header = array(
 		  array('field' => 'emp_name', 'data' => 'Employee Name'),
