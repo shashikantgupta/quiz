@@ -7,11 +7,18 @@ core = 7.x
 ; Stylesheets
 stylesheets[screen][] = styles/style.css
 stylesheets[screen][] = styles/font-awesome.min.css
-stylesheets[screen][] = styles/custom.css
+stylesheets[screen][] = css/custom.css
+stylesheets[screen][] = bootstrap/css/bootstrap.min.css
+stylesheets[screen][] = css/styles.css
 stylesheets[screen][] = styles/system.base.css
 stylesheets[screen][] = styles/system.menus.css
 stylesheets[screen][] = styles/system.theme.css
 stylesheets[screen][] = styles/system.messages.css
+
+; JavaScript plugins
+scripts[] = js/scripts.js
+scripts[] = bootstrap/js/bootstrap.min.js
+scripts[] = js/custom.js
 
 ; Settings
 settings[shortcut_module_link] = 1

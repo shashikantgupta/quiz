@@ -25,6 +25,9 @@ function ember_process_page(&$vars) {
   if (theme_get_setting('display_breadcrumbs') == 1) {
     unset($vars['breadcrumb']);
   }
+  if (arg(0) == 'admin' && arg(1) == 'emp' && arg(2) == 'detail') {
+     $vars['theme_hook_suggestions'] = array_merge(array('page__employee_list'), $vars['theme_hook_suggestions']);
+  }
 }
 
 /**
@@ -332,3 +335,4 @@ function ember_preprocess_user_register_form(&$vars) {
 	  $vars['form'] = drupal_build_form('user_register_form', $form_state['build_info']['args']);
 	}
 }
+
