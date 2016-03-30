@@ -197,10 +197,63 @@ function add_user_submit($form, &$form_state) {
 	  
 	  
 	  $email ='You have been registed tp Pro screen. Now you can add question as per your Technical Skills.';
+	  
+	  // Send the e-mail to employee.
+	  _email_employee_send($form_state['input']);
+	  
 	  // Send the e-mail through the user module.
       drupal_mail('user', 'register_no_approval_required', $email, NULL, array('account' => $account), variable_get('site_mail', 'noreply@example..com'));
 	}	
 }
+
+
+/**
+ * Sends an e-mail.
+ *
+ * @param array $form_values
+ *   An array of values from the contact form fields that were submitted.
+ *   There are just two relevant items: $form_values['email'] and
+ *   $form_values['message'].
+ */
+function _email_employee_send($form_values) {
+  $module = 'cquiz';
+  $key = 'emp_message';
+  $to = $form_values['email'];
+  $from = variable_get('site_mail', 'hr@prodigi.io');
+
+  $params = $form_values;
+  $language = language_default();
+
+  $send = TRUE;
+
+  $result = drupal_mail($module, $key, $to, $language, $params, $from, $send);
+  if ($result['result'] == TRUE) {
+    drupal_set_message(t('Your message has been sent.'));
+  }
+  else {
+    drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+  }
+}
+
+function cquiz_mail($key, &$message, $params) {
+  global $user;
+
+  $options = array(
+    'langcode' => $message['language']->language,
+  );
+
+  switch ($key) {
+    // Send a simple message from the contact form.
+    case 'emp_message':
+      $message['subject'] = t('E-mail sent from @site-name', array('@site-name' => variable_get('site_name', 'Drupal')), $options);
+      // Note that the message body is an array, not a string.
+      $message['body'][] = t('@name sent you the following message:', array('@name' => $user->name), $options);
+      $message['body'][] = check_plain($params['message']);
+      break;
+  }
+}
+
+
 
 
 function quiz_edit($form, &$form_state,$level, $type) {
